@@ -1,0 +1,42 @@
+{
+  "name": "@veksa/eslint-plugin-reselect-utils",
+  "version": "5.1.0-p2",
+  "description": "A collection of eslint rules for selectors",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "typings": "lib/index.d.ts",
+  "repository": "git+https://github.com/sgrishchenko/reselect-utils.git",
+  "homepage": "https://sgrishchenko.github.io/reselect-utils/docz",
+  "author": "Sergei Grishchenko",
+  "license": "MIT",
+  "files": [
+    "dist/",
+    "es/",
+    "lib/"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "compile": "tsc --noEmit",
+    "clean": "rimraf lib es dist",
+    "build:cjs": "tsc --outDir lib",
+    "build:es": "tsc --outDir es -m es2015",
+    "build": "yarn clean && yarn build:cjs && yarn build:es"
+  },
+  "dependencies": {
+    "@typescript-eslint/experimental-utils": "^5.62.0"
+  },
+  "peerDependencies": {
+    "@typescript-eslint/parser": "^6.14.0",
+    "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "@types/node": "20.11.16",
+    "@veksa/re-reselect": "^5.1.0-p1",
+    "@veksa/reselect-utils": "^5.1.0-p1",
+    "common-tags": "^1.8.2",
+    "reselect": "^5.0.1",
+    "rimraf": "5.0.5",
+    "rollup": "^4.9.0",
+    "typescript": "^5.3.3"
+  }
+}
