@@ -1,0 +1,62 @@
+{
+  "name": "@veksa/eslint-plugin-reselect-utils",
+  "version": "5.1.0-p5",
+  "description": "ESLint plugin to enforce best practices when using reselect and reselect-utils libraries",
+  "homepage": "https://github.com/veksa/eslint-plugin-reselect-utils",
+  "packageManager": "yarn@4.9.2",
+  "author": {
+    "name": "Aleksandr Khizhnyi",
+    "email": "mendler88@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:veksa/eslint-plugin-reselect-utils.git"
+  },
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "types": "lib/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "es/",
+    "lib/"
+  ],
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "reselect",
+    "reselect-utils",
+    "selector",
+    "memoization"
+  ],
+  "scripts": {
+    "compile": "tsc --noEmit",
+    "test": "jest",
+    "clean": "rimraf lib es dist",
+    "build:cjs": "tsc --outDir lib",
+    "build:es": "tsc --outDir es -m es2015",
+    "build": "yarn clean && yarn build:cjs && yarn build:es"
+  },
+  "dependencies": {
+    "@typescript-eslint/experimental-utils": "^5.62.0"
+  },
+  "peerDependencies": {
+    "@typescript-eslint/parser": "^8.35.0",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/common-tags": "^1.8.4",
+    "@types/jest": "^29.5.13",
+    "@types/node": "^24.0.4",
+    "@typescript-eslint/parser": "^8.35.0",
+    "@veksa/re-reselect": "^5.1.1-p8",
+    "@veksa/reselect": "^5.1.1-p7",
+    "@veksa/reselect-utils": "^5.1.0-p12",
+    "common-tags": "^1.8.2",
+    "eslint": "^8.57.1",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "rimraf": "^6.0.1",
+    "ts-jest": "^29.2.5",
+    "typescript": "^5.8.3"
+  }
+}
