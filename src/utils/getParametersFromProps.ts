@@ -1,35 +1,35 @@
 import ts from 'typescript';
-import { isPropOptional } from './isPropOptional';
+import {isPropOptional} from './isPropOptional';
 
 export const unknownPropType = 'unknownPropType';
 
 export type ParameterInfo = {
-  name: string;
-  typeString: string;
-  isOptional: boolean;
+    name: string;
+    typeString: string;
+    isOptional: boolean;
 };
 
 export const getParametersFromProps = (
-  props: ts.Symbol[],
-  typeChecker: ts.TypeChecker,
+    props: ts.Symbol[],
+    typeChecker: ts.TypeChecker,
 ): ParameterInfo[] =>
-  props.map((prop) => {
-    const { name } = prop;
+    props.map((prop) => {
+        const {name} = prop;
 
-    const [declaration] = prop.getDeclarations() ?? [];
-    const propType = declaration
-      ? typeChecker.getTypeAtLocation(declaration)
-      : undefined;
+        const [declaration] = prop.getDeclarations() ?? [];
+        const propType = declaration
+            ? typeChecker.getTypeAtLocation(declaration)
+            : undefined;
 
-    const typeString = propType
-      ? typeChecker.typeToString(propType)
-      : unknownPropType;
+        const typeString = propType
+            ? typeChecker.typeToString(propType)
+            : unknownPropType;
 
-    const isOptional = isPropOptional(prop);
+        const isOptional = isPropOptional(prop);
 
-    return {
-      name,
-      typeString,
-      isOptional,
-    };
-  });
+        return {
+            name,
+            typeString,
+            isOptional,
+        };
+    });

@@ -1,13 +1,13 @@
-import { stripIndent } from 'common-tags';
-import { createRuleTester } from '../utils/ruleTester';
-import { Errors, requireKeySelectorRule } from '../rules/requireKeySelector';
+import {stripIndent} from 'common-tags';
+import {createRuleTester} from '../utils/ruleTester';
+import {Errors, requireKeySelectorRule} from '../rules/requireKeySelector';
 
 const ruleTester = createRuleTester();
 
 ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
-  valid: [
-    {
-      code: stripIndent`
+    valid: [
+        {
+            code: stripIndent`
         import {createCachedSelector} from '@veksa/re-reselect';
         import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -22,9 +22,9 @@ ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
           ...getDefaultOptions(),
         });
       `,
-    },
-    {
-      code: stripIndent`
+        },
+        {
+            code: stripIndent`
         import {createCachedSelector} from '@veksa/re-reselect';
 
         const getDefaultOptions = () => ({});
@@ -37,9 +37,9 @@ ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
         keySelector: () => 1,
         });
       `,
-    },
-    {
-      code: stripIndent`
+        },
+        {
+            code: stripIndent`
         import {createCachedSelector} from '@veksa/re-reselect';
 
         const getDefaultOptions = () => ({});
@@ -52,11 +52,11 @@ ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
           ...getDefaultOptions(),
         });
       `,
-    },
-  ],
-  invalid: [
-    {
-      code: stripIndent`
+        },
+    ],
+    invalid: [
+        {
+            code: stripIndent`
         import {createCachedSelector} from '@veksa/re-reselect';
 
         const getDefaultOptions = () => ({});
@@ -68,7 +68,7 @@ ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
           ...getDefaultOptions(),
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {defaultKeySelector} from '@veksa/reselect-utils';
         import {createCachedSelector} from '@veksa/re-reselect';
 
@@ -82,14 +82,14 @@ ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
         keySelector: defaultKeySelector
         });
       `,
-      errors: [
-        {
-          messageId: Errors.KeySelectorIsMissing,
+            errors: [
+                {
+                    messageId: Errors.KeySelectorIsMissing,
+                },
+            ],
         },
-      ],
-    },
-    {
-      code: stripIndent`
+        {
+            code: stripIndent`
         import {createCachedSelector} from '@veksa/re-reselect';
 
         createCachedSelector(
@@ -97,7 +97,7 @@ ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
           () => 1,
         )({});
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {defaultKeySelector} from '@veksa/reselect-utils';
         import {createCachedSelector} from '@veksa/re-reselect';
 
@@ -108,14 +108,14 @@ ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
         keySelector: defaultKeySelector
         });
       `,
-      errors: [
-        {
-          messageId: Errors.KeySelectorIsMissing,
+            errors: [
+                {
+                    messageId: Errors.KeySelectorIsMissing,
+                },
+            ],
         },
-      ],
-    },
-    {
-      code: stripIndent`
+        {
+            code: stripIndent`
         import {createCachedSelector} from '@veksa/re-reselect';
         import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -128,7 +128,7 @@ ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
           ...getDefaultOptions(),
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedSelector} from '@veksa/re-reselect';
         import {createPropSelector, defaultKeySelector} from '@veksa/reselect-utils';
 
@@ -142,14 +142,14 @@ ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
         keySelector: defaultKeySelector
         });
       `,
-      errors: [
-        {
-          messageId: Errors.KeySelectorIsMissing,
+            errors: [
+                {
+                    messageId: Errors.KeySelectorIsMissing,
+                },
+            ],
         },
-      ],
-    },
-    {
-      code: stripIndent`
+        {
+            code: stripIndent`
         import {createCachedSelector} from '@veksa/re-reselect';
         import {defaultKeySelector} from '@veksa/reselect-utils';
 
@@ -162,7 +162,7 @@ ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
           ...getDefaultOptions(),
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedSelector} from '@veksa/re-reselect';
         import {defaultKeySelector} from '@veksa/reselect-utils';
 
@@ -176,19 +176,19 @@ ruleTester.run('require-key-create-cached-selector', requireKeySelectorRule, {
         keySelector: defaultKeySelector
         });
       `,
-      errors: [
-        {
-          messageId: Errors.KeySelectorIsMissing,
+            errors: [
+                {
+                    messageId: Errors.KeySelectorIsMissing,
+                },
+            ],
         },
-      ],
-    },
-  ],
+    ],
 });
 
 ruleTester.run('require-key-cached-struct-selector', requireKeySelectorRule, {
-  valid: [
-    {
-      code: stripIndent`
+    valid: [
+        {
+            code: stripIndent`
         import {createCachedStructuredSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -199,9 +199,9 @@ ruleTester.run('require-key-cached-struct-selector', requireKeySelectorRule, {
           ...getDefaultOptions(),
         });
       `,
-    },
-    {
-      code: stripIndent`
+        },
+        {
+            code: stripIndent`
         import {createCachedStructuredSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({});
@@ -211,9 +211,9 @@ ruleTester.run('require-key-cached-struct-selector', requireKeySelectorRule, {
         keySelector: () => 1,
         });
       `,
-    },
-    {
-      code: stripIndent`
+        },
+        {
+            code: stripIndent`
         import {createCachedStructuredSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({});
@@ -223,11 +223,11 @@ ruleTester.run('require-key-cached-struct-selector', requireKeySelectorRule, {
           ...getDefaultOptions(),
         });
       `,
-    },
-  ],
-  invalid: [
-    {
-      code: stripIndent`
+        },
+    ],
+    invalid: [
+        {
+            code: stripIndent`
         import {createCachedStructuredSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({});
@@ -236,7 +236,7 @@ ruleTester.run('require-key-cached-struct-selector', requireKeySelectorRule, {
           ...getDefaultOptions(),
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedStructuredSelector, defaultKeySelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({});
@@ -246,39 +246,39 @@ ruleTester.run('require-key-cached-struct-selector', requireKeySelectorRule, {
         keySelector: defaultKeySelector
         });
       `,
-      errors: [
-        {
-          messageId: Errors.KeySelectorIsMissing,
+            errors: [
+                {
+                    messageId: Errors.KeySelectorIsMissing,
+                },
+            ],
         },
-      ],
-    },
-    {
-      code: stripIndent`
+        {
+            code: stripIndent`
         import {createCachedStructuredSelector} from '@veksa/reselect-utils';
 
         createCachedStructuredSelector({})({
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedStructuredSelector, defaultKeySelector} from '@veksa/reselect-utils';
 
         createCachedStructuredSelector({})({
         keySelector: defaultKeySelector
         });
       `,
-      errors: [
-        {
-          messageId: Errors.KeySelectorIsMissing,
+            errors: [
+                {
+                    messageId: Errors.KeySelectorIsMissing,
+                },
+            ],
         },
-      ],
-    },
-  ],
+    ],
 });
 
 ruleTester.run('require-key-cached-seq-selector', requireKeySelectorRule, {
-  valid: [
-    {
-      code: stripIndent`
+    valid: [
+        {
+            code: stripIndent`
         import {createCachedSequenceSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -289,9 +289,9 @@ ruleTester.run('require-key-cached-seq-selector', requireKeySelectorRule, {
           ...getDefaultOptions(),
         });
       `,
-    },
-    {
-      code: stripIndent`
+        },
+        {
+            code: stripIndent`
         import {createCachedSequenceSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({});
@@ -301,9 +301,9 @@ ruleTester.run('require-key-cached-seq-selector', requireKeySelectorRule, {
         keySelector: () => 1,
         });
       `,
-    },
-    {
-      code: stripIndent`
+        },
+        {
+            code: stripIndent`
         import {createCachedSequenceSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({});
@@ -313,11 +313,11 @@ ruleTester.run('require-key-cached-seq-selector', requireKeySelectorRule, {
           ...getDefaultOptions(),
         });
       `,
-    },
-  ],
-  invalid: [
-    {
-      code: stripIndent`
+        },
+    ],
+    invalid: [
+        {
+            code: stripIndent`
         import {createCachedSequenceSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({});
@@ -326,7 +326,7 @@ ruleTester.run('require-key-cached-seq-selector', requireKeySelectorRule, {
           ...getDefaultOptions(),
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedSequenceSelector, defaultKeySelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({});
@@ -336,30 +336,30 @@ ruleTester.run('require-key-cached-seq-selector', requireKeySelectorRule, {
         keySelector: defaultKeySelector
         });
       `,
-      errors: [
-        {
-          messageId: Errors.KeySelectorIsMissing,
+            errors: [
+                {
+                    messageId: Errors.KeySelectorIsMissing,
+                },
+            ],
         },
-      ],
-    },
-    {
-      code: stripIndent`
+        {
+            code: stripIndent`
         import {createCachedSequenceSelector} from '@veksa/reselect-utils';
 
         createCachedSequenceSelector([])({});
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedSequenceSelector, defaultKeySelector} from '@veksa/reselect-utils';
 
         createCachedSequenceSelector([])({
         keySelector: defaultKeySelector
         });
       `,
-      errors: [
-        {
-          messageId: Errors.KeySelectorIsMissing,
+            errors: [
+                {
+                    messageId: Errors.KeySelectorIsMissing,
+                },
+            ],
         },
-      ],
-    },
-  ],
+    ],
 });

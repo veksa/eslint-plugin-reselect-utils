@@ -1,11 +1,11 @@
 import ts from 'typescript';
 
 export const isPropOptional = (prop: ts.Symbol) => {
-  const [declaration] = prop.getDeclarations() ?? [];
+    const [declaration] = prop.getDeclarations() ?? [];
 
-  return (
-    declaration &&
-    ts.isPropertySignature(declaration) &&
-    declaration.questionToken !== undefined
-  );
+    return (
+        declaration &&
+        ts.isPropertySignature(declaration) &&
+        declaration.questionToken !== undefined
+    );
 };

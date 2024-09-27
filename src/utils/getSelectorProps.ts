@@ -1,40 +1,40 @@
 import ts from 'typescript';
 
 export function getTypeArguments(
-  type: ts.TypeReference,
-  checker: ts.TypeChecker,
+    type: ts.TypeReference,
+    checker: ts.TypeChecker,
 ): readonly ts.Type[] {
-  // getTypeArguments was only added in TS3.7
-  if (checker.getTypeArguments) {
-    return checker.getTypeArguments(type);
-  }
+    // getTypeArguments was only added in TS3.7
+    if (checker.getTypeArguments) {
+        return checker.getTypeArguments(type);
+    }
 
-  return type.typeArguments ?? [];
+    return type.typeArguments ?? [];
 }
 
 export const getSelectorProps = (
-  selectorType: ts.Type,
-  typeChecker: ts.TypeChecker,
+    selectorType: ts.Type,
+    typeChecker: ts.TypeChecker,
 ) => {
-  const [signature] = typeChecker.getSignaturesOfType(
-    selectorType,
-    ts.SignatureKind.Call,
-  );
-  if (signature === undefined) {
-    return [];
-  }
+    const [signature] = typeChecker.getSignaturesOfType(
+        selectorType,
+        ts.SignatureKind.Call,
+    );
+    if (signature === undefined) {
+        return [];
+    }
 
-  const [, props] = signature.getParameters();
-  if (props === undefined || props.valueDeclaration === undefined) {
-    return [];
-  }
+    const [, props] = signature.getParameters();
+    if (props === undefined || props.valueDeclaration === undefined) {
+        return [];
+    }
 
-  const nodeType = typeChecker.getTypeOfSymbolAtLocation(
-    props,
-    props.valueDeclaration,
-  );
+    const nodeType = typeChecker.getTypeOfSymbolAtLocation(
+        props,
+        props.valueDeclaration,
+    );
 
-  const [params] = getTypeArguments(nodeType as ts.TypeReference, typeChecker);
+    const [params] = getTypeArguments(nodeType as ts.TypeReference, typeChecker);
 
-  return typeChecker.getPropertiesOfType(params ?? nodeType);
+    return typeChecker.getPropertiesOfType(params ?? nodeType);
 };

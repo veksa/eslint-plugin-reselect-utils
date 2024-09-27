@@ -1,16 +1,16 @@
-import { stripIndent } from 'common-tags';
-import { createRuleTester } from '../utils/ruleTester';
-import { noDifferentPropsRule, Errors } from '../rules/noDifferentProps';
+import {stripIndent} from 'common-tags';
+import {createRuleTester} from '../utils/ruleTester';
+import {Errors, noDifferentPropsRule} from '../rules/noDifferentProps';
 
 const ruleTester = createRuleTester();
 
 ruleTester.run(
-  'no-different-props-create-cached-selector',
-  noDifferentPropsRule,
-  {
-    valid: [
-      {
-        code: stripIndent`
+    'no-different-props-create-cached-selector',
+    noDifferentPropsRule,
+    {
+        valid: [
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector, stringComposeKeySelectors} from '@veksa/reselect-utils';
 
@@ -53,9 +53,9 @@ ruleTester.run(
              keySelector: createPropSelector<{ prop1: number }>().prop1()
           });
         `,
-      },
-      {
-        code: stripIndent`
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector, stringComposeKeySelectors} from '@veksa/reselect-utils';
 
@@ -100,9 +100,9 @@ ruleTester.run(
              keySelector: createPropSelector<{ prop1: EnumType }>().prop1()
           });
         `,
-      },
-      {
-        code: stripIndent`
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -119,9 +119,9 @@ ruleTester.run(
             ...getDefaultOptions(),
           });
         `,
-      },
-      {
-        code: stripIndent`
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector, stringComposeKeySelectors} from '@veksa/reselect-utils';
 
@@ -160,9 +160,9 @@ ruleTester.run(
              )
           });
         `,
-      },
-      {
-        code: stripIndent`
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector, stringComposeKeySelectors} from '@veksa/reselect-utils';
 
@@ -183,9 +183,9 @@ ruleTester.run(
             ...getDefaultOptions(),
           });
         `,
-      },
-      {
-        code: stripIndent`
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector, defaultKeySelector} from '@veksa/reselect-utils';
 
@@ -202,9 +202,9 @@ ruleTester.run(
             ...getDefaultOptions(),
           });
         `,
-      },
-      {
-        code: stripIndent`
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector, stringComposeKeySelectors} from '@veksa/reselect-utils';
 
@@ -249,11 +249,11 @@ ruleTester.run(
              keySelector: createPropSelector<{ prop1?: EnumType }>().prop1()
           });
         `,
-      },
-    ],
-    invalid: [
-      {
-        code: stripIndent`
+            },
+        ],
+        invalid: [
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
 
           enum Field {}
@@ -267,7 +267,7 @@ ruleTester.run(
             keySelector: (state: unknown, props: { prop2?: Field }) => props.prop2,
           });
         `,
-        output: stripIndent`
+                output: stripIndent`
           import {createPropSelector} from '@veksa/reselect-utils';
           import {createCachedSelector} from '@veksa/re-reselect';
 
@@ -282,14 +282,14 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop1?: Field | undefined }>().prop1(),
           });
         `,
-        errors: [
-          {
-            messageId: Errors.DifferentProps,
-          },
-        ],
-      },
-      {
-        code: stripIndent`
+                errors: [
+                    {
+                        messageId: Errors.DifferentProps,
+                    },
+                ],
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -304,7 +304,7 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop1: string }>().prop1(),
           });
         `,
-        output: stripIndent`
+                output: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -319,14 +319,14 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop1?: Field | undefined }>().prop1(),
           });
         `,
-        errors: [
-          {
-            messageId: Errors.DifferentProps,
-          },
-        ],
-      },
-      {
-        code: stripIndent`
+                errors: [
+                    {
+                        messageId: Errors.DifferentProps,
+                    },
+                ],
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -339,7 +339,7 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop1: string }>().prop1(),
           });
         `,
-        output: stripIndent`
+                output: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -352,14 +352,14 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop1?: number | undefined }>().prop1(),
           });
         `,
-        errors: [
-          {
-            messageId: Errors.DifferentProps,
-          },
-        ],
-      },
-      {
-        code: stripIndent`
+                errors: [
+                    {
+                        messageId: Errors.DifferentProps,
+                    },
+                ],
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -372,7 +372,7 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop1: string }>().prop1(),
           });
         `,
-        output: stripIndent`
+                output: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -385,14 +385,14 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop1: number }>().prop1(),
           });
         `,
-        errors: [
-          {
-            messageId: Errors.DifferentProps,
-          },
-        ],
-      },
-      {
-        code: stripIndent`
+                errors: [
+                    {
+                        messageId: Errors.DifferentProps,
+                    },
+                ],
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -409,7 +409,7 @@ ruleTester.run(
             ...getDefaultOptions()
           });
         `,
-        output: stripIndent`
+                output: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -427,14 +427,14 @@ ruleTester.run(
           keySelector: createPropSelector<{ prop1: number }>().prop1()
           });
         `,
-        errors: [
-          {
-            messageId: Errors.DifferentProps,
-          },
-        ],
-      },
-      {
-        code: stripIndent`
+                errors: [
+                    {
+                        messageId: Errors.DifferentProps,
+                    },
+                ],
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -451,7 +451,7 @@ ruleTester.run(
             ...getDefaultOptions()
           });
         `,
-        output: stripIndent`
+                output: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -469,14 +469,14 @@ ruleTester.run(
           keySelector: createPropSelector<{ prop1: number }>().prop1()
           });
         `,
-        errors: [
-          {
-            messageId: Errors.DifferentProps,
-          },
-        ],
-      },
-      {
-        code: stripIndent`
+                errors: [
+                    {
+                        messageId: Errors.DifferentProps,
+                    },
+                ],
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -489,7 +489,7 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop2: number }>().prop2(),
           });
         `,
-        output: stripIndent`
+                output: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -502,14 +502,14 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop1: number }>().prop1(),
           });
         `,
-        errors: [
-          {
-            messageId: Errors.DifferentProps,
-          },
-        ],
-      },
-      {
-        code: stripIndent`
+                errors: [
+                    {
+                        messageId: Errors.DifferentProps,
+                    },
+                ],
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -523,7 +523,7 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop2: number }>().prop2(),
           });
         `,
-        output: stripIndent`
+                output: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector, stringComposeKeySelectors} from '@veksa/reselect-utils';
 
@@ -540,19 +540,19 @@ ruleTester.run(
           ),
           });
         `,
-        errors: [
-          {
-            messageId: Errors.DifferentProps,
-          },
-        ],
-      },
-      {
-        options: [
-          {
-            composer: 'arrayComposeKeySelectors',
-          },
-        ],
-        code: stripIndent`
+                errors: [
+                    {
+                        messageId: Errors.DifferentProps,
+                    },
+                ],
+            },
+            {
+                options: [
+                    {
+                        composer: 'arrayComposeKeySelectors',
+                    },
+                ],
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -566,7 +566,7 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop2: number }>().prop2(),
           });
         `,
-        output: stripIndent`
+                output: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector, arrayComposeKeySelectors} from '@veksa/reselect-utils';
 
@@ -583,14 +583,14 @@ ruleTester.run(
           ),
           });
         `,
-        errors: [
-          {
-            messageId: Errors.DifferentProps,
-          },
-        ],
-      },
-      {
-        code: stripIndent`
+                errors: [
+                    {
+                        messageId: Errors.DifferentProps,
+                    },
+                ],
+            },
+            {
+                code: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector} from '@veksa/reselect-utils';
 
@@ -601,7 +601,7 @@ ruleTester.run(
             keySelector: createPropSelector<{ prop2: number }>().prop2(),
           });
         `,
-        output: stripIndent`
+                output: stripIndent`
           import {createCachedSelector} from '@veksa/re-reselect';
           import {createPropSelector, defaultKeySelector} from '@veksa/reselect-utils';
 
@@ -612,20 +612,20 @@ ruleTester.run(
             keySelector: defaultKeySelector,
           });
         `,
-        errors: [
-          {
-            messageId: Errors.DifferentProps,
-          },
+                errors: [
+                    {
+                        messageId: Errors.DifferentProps,
+                    },
+                ],
+            },
         ],
-      },
-    ],
-  },
+    },
 );
 
 ruleTester.run('no-different-props-cached-struct', noDifferentPropsRule, {
-  valid: [
-    {
-      code: stripIndent`
+    valid: [
+        {
+            code: stripIndent`
         import {createCachedStructuredSelector, createPropSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -638,9 +638,9 @@ ruleTester.run('no-different-props-cached-struct', noDifferentPropsRule, {
           ...getDefaultOptions(),
         });
       `,
-    },
-    {
-      code: stripIndent`
+        },
+        {
+            code: stripIndent`
         import {createCachedStructuredSelector, createPropSelector, stringComposeKeySelectors} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -657,11 +657,11 @@ ruleTester.run('no-different-props-cached-struct', noDifferentPropsRule, {
           ...getDefaultOptions(),
         });
       `,
-    },
-  ],
-  invalid: [
-    {
-      code: stripIndent`
+        },
+    ],
+    invalid: [
+        {
+            code: stripIndent`
         import {createCachedStructuredSelector, createPropSelector} from '@veksa/reselect-utils';
 
         createCachedStructuredSelector({
@@ -670,7 +670,7 @@ ruleTester.run('no-different-props-cached-struct', noDifferentPropsRule, {
           keySelector: createPropSelector<{ prop1: string }>().prop1(),
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedStructuredSelector, createPropSelector} from '@veksa/reselect-utils';
 
         createCachedStructuredSelector({
@@ -679,14 +679,14 @@ ruleTester.run('no-different-props-cached-struct', noDifferentPropsRule, {
           keySelector: createPropSelector<{ prop1: number }>().prop1(),
         });
       `,
-      errors: [
-        {
-          messageId: Errors.DifferentProps,
+            errors: [
+                {
+                    messageId: Errors.DifferentProps,
+                },
+            ],
         },
-      ],
-    },
-    {
-      code: stripIndent`
+        {
+            code: stripIndent`
         import {createCachedStructuredSelector, createPropSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -699,7 +699,7 @@ ruleTester.run('no-different-props-cached-struct', noDifferentPropsRule, {
           ...getDefaultOptions()
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedStructuredSelector, createPropSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -713,14 +713,14 @@ ruleTester.run('no-different-props-cached-struct', noDifferentPropsRule, {
         keySelector: createPropSelector<{ prop1: number }>().prop1()
         });
       `,
-      errors: [
-        {
-          messageId: Errors.DifferentProps,
+            errors: [
+                {
+                    messageId: Errors.DifferentProps,
+                },
+            ],
         },
-      ],
-    },
-    {
-      code: stripIndent`
+        {
+            code: stripIndent`
         import {createCachedStructuredSelector, createPropSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -733,7 +733,7 @@ ruleTester.run('no-different-props-cached-struct', noDifferentPropsRule, {
           ...getDefaultOptions()
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedStructuredSelector, createPropSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -747,14 +747,14 @@ ruleTester.run('no-different-props-cached-struct', noDifferentPropsRule, {
         keySelector: createPropSelector<{ prop1: number }>().prop1()
         });
       `,
-      errors: [
-        {
-          messageId: Errors.DifferentProps,
+            errors: [
+                {
+                    messageId: Errors.DifferentProps,
+                },
+            ],
         },
-      ],
-    },
-    {
-      code: stripIndent`
+        {
+            code: stripIndent`
         import {createCachedStructuredSelector, createPropSelector} from '@veksa/reselect-utils';
 
         createCachedStructuredSelector({
@@ -763,7 +763,7 @@ ruleTester.run('no-different-props-cached-struct', noDifferentPropsRule, {
           keySelector: createPropSelector<{ prop2: number }>().prop2(),
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedStructuredSelector, createPropSelector} from '@veksa/reselect-utils';
 
         createCachedStructuredSelector({
@@ -772,19 +772,19 @@ ruleTester.run('no-different-props-cached-struct', noDifferentPropsRule, {
           keySelector: createPropSelector<{ prop1: number }>().prop1(),
         });
       `,
-      errors: [
-        {
-          messageId: Errors.DifferentProps,
+            errors: [
+                {
+                    messageId: Errors.DifferentProps,
+                },
+            ],
         },
-      ],
-    },
-  ],
+    ],
 });
 
 ruleTester.run('no-different-props-cached-seq', noDifferentPropsRule, {
-  valid: [
-    {
-      code: stripIndent`
+    valid: [
+        {
+            code: stripIndent`
         import {createCachedSequenceSelector, createPropSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -797,9 +797,9 @@ ruleTester.run('no-different-props-cached-seq', noDifferentPropsRule, {
           ...getDefaultOptions(),
         });
       `,
-    },
-    {
-      code: stripIndent`
+        },
+        {
+            code: stripIndent`
         import {createCachedSequenceSelector, createPropSelector, stringComposeKeySelectors} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -816,11 +816,11 @@ ruleTester.run('no-different-props-cached-seq', noDifferentPropsRule, {
           ...getDefaultOptions(),
         });
       `,
-    },
-  ],
-  invalid: [
-    {
-      code: stripIndent`
+        },
+    ],
+    invalid: [
+        {
+            code: stripIndent`
         import {createCachedSequenceSelector, createPropSelector} from '@veksa/reselect-utils';
 
         createCachedSequenceSelector([
@@ -829,7 +829,7 @@ ruleTester.run('no-different-props-cached-seq', noDifferentPropsRule, {
           keySelector: createPropSelector<{ prop1: string }>().prop1(),
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedSequenceSelector, createPropSelector} from '@veksa/reselect-utils';
 
         createCachedSequenceSelector([
@@ -838,14 +838,14 @@ ruleTester.run('no-different-props-cached-seq', noDifferentPropsRule, {
           keySelector: createPropSelector<{ prop1: number }>().prop1(),
         });
       `,
-      errors: [
-        {
-          messageId: Errors.DifferentProps,
+            errors: [
+                {
+                    messageId: Errors.DifferentProps,
+                },
+            ],
         },
-      ],
-    },
-    {
-      code: stripIndent`
+        {
+            code: stripIndent`
         import {createCachedSequenceSelector, createPropSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -858,7 +858,7 @@ ruleTester.run('no-different-props-cached-seq', noDifferentPropsRule, {
           ...getDefaultOptions()
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedSequenceSelector, createPropSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -872,14 +872,14 @@ ruleTester.run('no-different-props-cached-seq', noDifferentPropsRule, {
         keySelector: createPropSelector<{ prop1: number }>().prop1()
         });
       `,
-      errors: [
-        {
-          messageId: Errors.DifferentProps,
+            errors: [
+                {
+                    messageId: Errors.DifferentProps,
+                },
+            ],
         },
-      ],
-    },
-    {
-      code: stripIndent`
+        {
+            code: stripIndent`
         import {createCachedSequenceSelector, createPropSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -892,7 +892,7 @@ ruleTester.run('no-different-props-cached-seq', noDifferentPropsRule, {
           ...getDefaultOptions()
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedSequenceSelector, createPropSelector} from '@veksa/reselect-utils';
 
         const getDefaultOptions = () => ({
@@ -906,14 +906,14 @@ ruleTester.run('no-different-props-cached-seq', noDifferentPropsRule, {
         keySelector: createPropSelector<{ prop1: number }>().prop1()
         });
       `,
-      errors: [
-        {
-          messageId: Errors.DifferentProps,
+            errors: [
+                {
+                    messageId: Errors.DifferentProps,
+                },
+            ],
         },
-      ],
-    },
-    {
-      code: stripIndent`
+        {
+            code: stripIndent`
         import {createCachedSequenceSelector, createPropSelector} from '@veksa/reselect-utils';
 
         createCachedSequenceSelector([
@@ -922,7 +922,7 @@ ruleTester.run('no-different-props-cached-seq', noDifferentPropsRule, {
           keySelector: createPropSelector<{ prop2: number }>().prop2(),
         });
       `,
-      output: stripIndent`
+            output: stripIndent`
         import {createCachedSequenceSelector, createPropSelector} from '@veksa/reselect-utils';
 
         createCachedSequenceSelector([
@@ -931,11 +931,11 @@ ruleTester.run('no-different-props-cached-seq', noDifferentPropsRule, {
           keySelector: createPropSelector<{ prop1: number }>().prop1(),
         });
       `,
-      errors: [
-        {
-          messageId: Errors.DifferentProps,
+            errors: [
+                {
+                    messageId: Errors.DifferentProps,
+                },
+            ],
         },
-      ],
-    },
-  ],
+    ],
 });
