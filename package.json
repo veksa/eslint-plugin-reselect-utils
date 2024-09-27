@@ -1,6 +1,6 @@
 {
   "name": "@veksa/eslint-plugin-reselect-utils",
-  "version": "5.1.0-p3",
+  "version": "5.1.0-p4",
   "description": "A collection of eslint rules for selectors",
   "main": "lib/index.js",
   "module": "es/index.js",
