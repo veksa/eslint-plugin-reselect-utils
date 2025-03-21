@@ -1,6 +1,6 @@
 {
   "name": "@veksa/eslint-plugin-reselect-utils",
-  "version": "5.1.0-p4",
+  "version": "5.1.0-p5",
   "description": "A collection of eslint rules for selectors",
   "main": "lib/index.js",
   "module": "es/index.js",
@@ -26,18 +26,18 @@
     "@typescript-eslint/experimental-utils": "^5.62.0"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "^8.7.0",
-    "typescript": "^5.6.2"
+    "@typescript-eslint/parser": "^8.27.0",
+    "typescript": "^5.8.2"
   },
   "devDependencies": {
     "@types/common-tags": "^1.8.4",
-    "@types/node": "^22.7.3",
-    "@veksa/re-reselect": "^5.1.1-p3",
-    "@veksa/reselect": "^5.1.1-p3",
-    "@veksa/reselect-utils": "^5.1.0-p11",
+    "@types/node": "^22.13.11",
+    "@veksa/re-reselect": "^5.1.1-p5",
+    "@veksa/reselect": "^5.1.1-p5",
+    "@veksa/reselect-utils": "^5.1.0-p12",
     "common-tags": "^1.8.2",
     "rimraf": "^6.0.1",
-    "rollup": "^4.22.4",
-    "typescript": "^5.6.2"
-  }
+    "typescript": "^5.8.2"
+  },
+  "packageManager": "yarn@4.7.0"
 }
