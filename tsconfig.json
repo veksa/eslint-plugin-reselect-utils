@@ -1,33 +1,27 @@
 {
   "compilerOptions": {
+    "jsx": "react",
     "rootDir": "src",
     "target": "es2015",
-    "module": "commonjs",
-    "declaration": false,
-    "declarationMap": false,
+    "module": "es2015",
+    "moduleResolution": "bundler",
     "lib": [
-      "dom",
-      "es2020"
-    ],
-    "typeRoots": [
-      "node_modules/@types",
-      "types"
+      "es2019"
     ],
     "strict": true,
-    "moduleResolution": "node",
     "sourceMap": true,
     "esModuleInterop": true,
     "downlevelIteration": true,
-    "jsx": "react",
+    "isolatedModules": true,
     "noUnusedLocals": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolvePackageJsonExports": true,
+    "allowSyntheticDefaultImports": true
   },
   "include": [
     "src"
   ],
   "exclude": [
-    "src/__data__/**",
-    "src/__tests__/**",
-    "src/__stories__/**"
+    "src/__tests__/**"
   ]
 }

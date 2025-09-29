@@ -1,9 +1,11 @@
-import {ASTUtils, TSESLint, TSESTree,} from '@typescript-eslint/experimental-utils';
+import {TSESLint, TSESTree} from "@typescript-eslint/utils";
+import {isCommaToken} from "@typescript-eslint/utils/ast-utils";
+import {RuleFixer, SourceCode} from "@typescript-eslint/utils/ts-eslint";
 
 export const getCommaTokenFix = (
-    fixer: TSESLint.RuleFixer,
+    fixer: RuleFixer,
     argument: TSESTree.ObjectExpression,
-    sourceCode: TSESLint.SourceCode,
+    sourceCode: SourceCode,
 ): TSESLint.RuleFix => {
     const emptyFix = fixer.insertTextBeforeRange([0, 0], ``);
 
@@ -15,7 +17,7 @@ export const getCommaTokenFix = (
 
     const lastToken = sourceCode.getTokenAfter(lastProperty);
 
-    if (lastToken && ASTUtils.isCommaToken(lastToken)) {
+    if (lastToken && isCommaToken(lastToken)) {
         return emptyFix;
     }
 

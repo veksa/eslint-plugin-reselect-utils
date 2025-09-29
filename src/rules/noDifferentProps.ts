@@ -1,5 +1,3 @@
-import {AST_NODE_TYPES, ESLintUtils,} from '@typescript-eslint/experimental-utils';
-import {ruleCreator} from '../utils/ruleCreator';
 import {getCachedSelectorCreatorOptions} from '../utils/getCachedSelectorCreatorOptions';
 import {getKeySelector} from '../utils/getKeySelector';
 import {areParametersDifferent} from '../utils/areParametersDifferent';
@@ -10,157 +8,158 @@ import {getImportFix} from '../utils/getImportFix';
 import {getSelectorProps} from '../utils/getSelectorProps';
 import {getCommaTokenFix} from '../utils/getCommaTokenFix';
 import {getKeySelectorFix} from '../utils/getKeySelectorFix';
+import {AST_NODE_TYPES, TSESLint} from '@typescript-eslint/utils';
+import {getParserServices} from "@typescript-eslint/utils/eslint-utils";
 
-export type Options = {
-    composer?: 'stringComposeKeySelectors' | 'arrayComposeKeySelectors' | string;
-};
+type MessageIds = 'different-props';
+type Options = [];
+
+type IRule = TSESLint.RuleModule<MessageIds, Options>;
 
 export enum Errors {
-    DifferentProps = 'DifferentProps',
+    DifferentProps = 'different-props',
 }
 
-export const noDifferentPropsRule = ruleCreator({
-    name: 'no-different-props',
-    defaultOptions: [
+const meta: IRule['meta'] = {
+    docs: {
+        description: 'Cached selector and key selector must have same props.',
+    },
+    fixable: 'code',
+    messages: {
+        [Errors.DifferentProps]: 'Cached selector and key selector must have same props. selector parameters = {{selectorParameters}}, key selector parameters = {{keySelectorParameters}}',
+    },
+    schema: [
         {
-            composer: 'stringComposeKeySelectors',
-        },
-    ] as [Options],
-    meta: {
-        docs: {
-            description: 'Cached selector and key selector must have same props.',
-            recommended: 'error',
-        },
-        fixable: 'code',
-        messages: {
-            [Errors.DifferentProps]:
-                'Cached selector and key selector must have same props. selector parameters = {{selectorParameters}}, key selector parameters = {{keySelectorParameters}}',
-        },
-        schema: [
-            {
-                type: 'object',
-                properties: {
-                    composer: {
-                        type: 'string',
-                    },
+            type: 'object',
+            properties: {
+                composer: {
+                    type: 'string',
                 },
             },
-        ],
-        type: 'problem',
-    },
-    create: (context, [options]) => {
-        const {composer = 'stringComposeKeySelectors'} = options;
-        const sourceCode = context.getSourceCode();
-        const {esTreeNodeToTSNodeMap, program} = ESLintUtils.getParserServices(
-            context,
-        );
-        const typeChecker = program.getTypeChecker();
+        },
+    ],
+    type: 'problem',
+};
 
-        return {
-            CallExpression(callExpression) {
-                const tsNode = esTreeNodeToTSNodeMap.get(callExpression);
+const create: IRule['create'] = context => {
+    const composer = 'stringComposeKeySelectors';
 
-                if (isCachedSelectorCreator(tsNode)) {
-                    const cachedOptions = getCachedSelectorCreatorOptions(
-                        tsNode,
+    const sourceCode = context.sourceCode;
+    const {esTreeNodeToTSNodeMap, program} = getParserServices(
+        context,
+    );
+    const typeChecker = program.getTypeChecker();
+
+    return {
+        CallExpression(callExpression) {
+            const tsNode = esTreeNodeToTSNodeMap.get(callExpression);
+
+            if (isCachedSelectorCreator(tsNode)) {
+                const cachedOptions = getCachedSelectorCreatorOptions(
+                    tsNode,
+                    typeChecker,
+                );
+                const keySelector = getKeySelector(cachedOptions);
+
+                if (keySelector && keySelector.valueDeclaration) {
+                    const keySelectorType = typeChecker.getTypeOfSymbolAtLocation(
+                        keySelector,
+                        keySelector.valueDeclaration,
+                    );
+                    const cachedSelectorType = typeChecker.getTypeAtLocation(tsNode);
+
+                    const keySelectorProps = getSelectorProps(
+                        keySelectorType,
                         typeChecker,
                     );
-                    const keySelector = getKeySelector(cachedOptions);
+                    const cachedSelectorProps = getSelectorProps(
+                        cachedSelectorType,
+                        typeChecker,
+                    );
 
-                    if (keySelector && keySelector.valueDeclaration) {
-                        const keySelectorType = typeChecker.getTypeOfSymbolAtLocation(
-                            keySelector,
-                            keySelector.valueDeclaration,
-                        );
-                        const cachedSelectorType = typeChecker.getTypeAtLocation(tsNode);
+                    const selectorParameters = getParametersFromProps(
+                        cachedSelectorProps,
+                        typeChecker,
+                    );
+                    const keySelectorParameters = getParametersFromProps(
+                        keySelectorProps,
+                        typeChecker,
+                    );
 
-                        const keySelectorProps = getSelectorProps(
-                            keySelectorType,
-                            typeChecker,
-                        );
-                        const cachedSelectorProps = getSelectorProps(
-                            cachedSelectorType,
-                            typeChecker,
-                        );
+                    if (
+                        areParametersDifferent(selectorParameters, keySelectorParameters)
+                    ) {
+                        const selectorParametersString = selectorParameters
+                            .map((prop) => ` ${prop.name}: ${prop.typeString} `)
+                            .join(';');
 
-                        const selectorParameters = getParametersFromProps(
-                            cachedSelectorProps,
-                            typeChecker,
-                        );
-                        const keySelectorParameters = getParametersFromProps(
-                            keySelectorProps,
-                            typeChecker,
-                        );
+                        const keySelectorParametersString = keySelectorParameters
+                            .map((prop) => ` ${prop.name}: ${prop.typeString} `)
+                            .join(';');
 
-                        if (
-                            areParametersDifferent(selectorParameters, keySelectorParameters)
-                        ) {
-                            const selectorParametersString = selectorParameters
-                                .map((prop) => ` ${prop.name}: ${prop.typeString} `)
-                                .join(';');
+                        context.report({
+                            messageId: Errors.DifferentProps,
+                            node: callExpression.arguments[0],
+                            data: {
+                                selectorParameters: `{${selectorParametersString}}`,
+                                keySelectorParameters: `{${keySelectorParametersString}}`,
+                            },
+                            fix(fixer: any) {
+                                const argument = callExpression.arguments[0];
 
-                            const keySelectorParametersString = keySelectorParameters
-                                .map((prop) => ` ${prop.name}: ${prop.typeString} `)
-                                .join(';');
+                                const propSelectors = selectorParameters.map(
+                                    getPropSelectorText,
+                                );
+                                const isComposedSelector = propSelectors.length > 1;
+                                const isDefaultKeySelector = propSelectors.length === 0;
+                                const composedPropSelector = isComposedSelector
+                                    ? `${composer}(\n        ${propSelectors.join(',\n        ')}\n    )`
+                                    : propSelectors[0] ?? 'defaultKeySelector';
 
-                            context.report({
-                                messageId: Errors.DifferentProps,
-                                node: callExpression.arguments[0],
-                                data: {
-                                    selectorParameters: `{${selectorParametersString}}`,
-                                    keySelectorParameters: `{${keySelectorParametersString}}`,
-                                },
-                                fix(fixer) {
-                                    const argument = callExpression.arguments[0];
-
-                                    const propSelectors = selectorParameters.map(
-                                        getPropSelectorText,
+                                if (argument.type === AST_NODE_TYPES.ObjectExpression) {
+                                    const commaTokenFix = getCommaTokenFix(
+                                        fixer,
+                                        argument,
+                                        sourceCode,
                                     );
-                                    const isComposedSelector = propSelectors.length > 1;
-                                    const isDefaultKeySelector = propSelectors.length === 0;
-                                    const composedPropSelector = isComposedSelector
-                                        ? `${composer}(\n${propSelectors.join(', \n')}\n)`
-                                        : propSelectors[0] ?? 'defaultKeySelector';
 
-                                    if (argument.type === AST_NODE_TYPES.ObjectExpression) {
-                                        const commaTokenFix = getCommaTokenFix(
-                                            fixer,
-                                            argument,
-                                            sourceCode,
-                                        );
+                                    const keySelectorFix = getKeySelectorFix(
+                                        fixer,
+                                        argument,
+                                        sourceCode,
+                                        composedPropSelector,
+                                    );
 
-                                        const keySelectorFix = getKeySelectorFix(
-                                            fixer,
-                                            argument,
-                                            sourceCode,
-                                            composedPropSelector,
-                                        );
-
-                                        const specifierNames = ['createPropSelector'];
-                                        if (isComposedSelector) {
-                                            specifierNames.push(composer);
-                                        }
-                                        if (isDefaultKeySelector) {
-                                            specifierNames.push('defaultKeySelector');
-                                        }
-
-                                        const importFix = getImportFix(
-                                            fixer,
-                                            callExpression,
-                                            '@veksa/reselect-utils',
-                                            specifierNames,
-                                        );
-
-                                        return [commaTokenFix, keySelectorFix, importFix];
+                                    const specifierNames = ['createPropSelector'];
+                                    if (isComposedSelector) {
+                                        specifierNames.push(composer);
+                                    }
+                                    if (isDefaultKeySelector) {
+                                        specifierNames.push('defaultKeySelector');
                                     }
 
-                                    return null;
-                                },
-                            });
-                        }
+                                    const importFix = getImportFix(
+                                        fixer,
+                                        callExpression,
+                                        '@veksa/reselect-utils',
+                                        specifierNames,
+                                    );
+
+                                    return [commaTokenFix, keySelectorFix, importFix];
+                                }
+
+                                return null;
+                            },
+                        });
                     }
                 }
-            },
-        };
-    },
-});
+            }
+        },
+    };
+}
+
+export const noDifferentPropsRule: IRule = {
+    meta,
+    create,
+    defaultOptions: [],
+};

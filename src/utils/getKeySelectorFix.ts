@@ -1,4 +1,4 @@
-import {AST_NODE_TYPES, ASTUtils, TSESLint, TSESTree,} from '@typescript-eslint/experimental-utils';
+import {AST_NODE_TYPES, ASTUtils, TSESLint, TSESTree} from '@typescript-eslint/utils';
 
 export const getKeySelectorFix = (
     fixer: TSESLint.RuleFixer,
@@ -6,26 +6,29 @@ export const getKeySelectorFix = (
     sourceCode: TSESLint.SourceCode,
     keySelectorValue: string,
 ): TSESLint.RuleFix => {
-    const keySelectorProperty = argument.properties.find(
-        (property) =>
-            property.type === AST_NODE_TYPES.Property &&
-            property.key.type === AST_NODE_TYPES.Identifier &&
-            property.key.name === 'keySelector',
-    );
-
     const keySelector = `keySelector: ${keySelectorValue}`;
 
     const firstToken = sourceCode.getFirstToken(argument);
     const lastToken = sourceCode.getLastToken(argument);
     const leadingLineBreak =
-        firstToken &&
-        lastToken &&
-        ASTUtils.isTokenOnSameLine(firstToken, lastToken);
+        firstToken
+        && lastToken
+        && ASTUtils.isTokenOnSameLine(firstToken, lastToken);
 
-    return keySelectorProperty
-        ? fixer.replaceText(keySelectorProperty, keySelector)
-        : fixer.insertTextBeforeRange(
-            [argument.range[1] - 1, argument.range[1] - 1],
-            leadingLineBreak ? `\n${keySelector}\n` : `${keySelector}\n`,
-        );
+    const keySelectorProperty = argument.properties.find(property => {
+        return property.type === AST_NODE_TYPES.Property
+            && property.key.type === AST_NODE_TYPES.Identifier
+            && property.key.name === 'keySelector';
+    });
+
+    if (keySelectorProperty) {
+        return fixer.replaceText(keySelectorProperty, keySelector);
+    }
+
+    return fixer.insertTextBeforeRange(
+        [argument.range[1] - 1, argument.range[1] - 1],
+        leadingLineBreak
+            ? `\n    ${keySelector}\n`
+            : `    ${keySelector}\n`,
+    );
 };

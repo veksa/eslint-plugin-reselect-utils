@@ -1,4 +1,4 @@
-import {TSESLint, TSESTree} from '@typescript-eslint/experimental-utils';
+import {TSESLint, TSESTree} from '@typescript-eslint/utils';
 import {getImportDeclaration} from './getImportDeclaration';
 
 export const getImportFix = (
@@ -13,13 +13,11 @@ export const getImportFix = (
     let missingSpecifierNames = specifierNames;
 
     if (importNode) {
-        existingSpecifierNames = importNode.specifiers.map(
-            (specifier) => specifier.local.name,
-        );
+        existingSpecifierNames = importNode.specifiers.map(specifier => specifier.local.name);
 
-        missingSpecifierNames = specifierNames.filter(
-            (specifierName) => !existingSpecifierNames.includes(specifierName),
-        );
+        missingSpecifierNames = specifierNames.filter(specifierName => {
+            return !existingSpecifierNames.includes(specifierName);
+        });
     }
 
     const resultSpecifierNames = [
@@ -29,7 +27,9 @@ export const getImportFix = (
     const specifiers = resultSpecifierNames.join(', ');
     const importText = `import {${specifiers}} from '${sourceValue}';`;
 
-    return importNode
-        ? fixer.replaceText(importNode, importText)
-        : fixer.insertTextBeforeRange([0, 0], `${importText}\n`);
+    if (importNode) {
+        return fixer.replaceText(importNode, importText);
+    }
+
+    return fixer.insertTextBeforeRange([0, 0], `${importText}\n`);
 };

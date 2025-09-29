@@ -8,13 +8,11 @@ export const areParametersDifferent = (
         return true;
     }
 
-    return selectorParameters.some(
-        (selectorProperty) =>
-            !keySelectorParameters.find(
-                (keySelectorProperty) =>
-                    selectorProperty.name === keySelectorProperty.name &&
-                    selectorProperty.typeString === keySelectorProperty.typeString &&
-                    selectorProperty.isOptional === keySelectorProperty.isOptional,
-            ),
-    );
+    return selectorParameters.some((selectorProperty) => {
+        return !keySelectorParameters.find((keySelectorProperty) => {
+            return selectorProperty.name === keySelectorProperty.name &&
+                selectorProperty.typeString === keySelectorProperty.typeString &&
+                selectorProperty.isOptional === keySelectorProperty.isOptional;
+        });
+    });
 };

@@ -12,8 +12,8 @@ export type ParameterInfo = {
 export const getParametersFromProps = (
     props: ts.Symbol[],
     typeChecker: ts.TypeChecker,
-): ParameterInfo[] =>
-    props.map((prop) => {
+): ParameterInfo[] => {
+    return props.map(prop => {
         const {name} = prop;
 
         const [declaration] = prop.getDeclarations() ?? [];
@@ -33,3 +33,4 @@ export const getParametersFromProps = (
             isOptional,
         };
     });
+};

@@ -1,4 +1,4 @@
-import {TSESTree} from '@typescript-eslint/experimental-utils';
+import {TSESTree} from '@typescript-eslint/utils';
 
 export const getParent = <N extends TSESTree.Node>(
     node: TSESTree.Node,
