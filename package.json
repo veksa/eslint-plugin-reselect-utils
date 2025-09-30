@@ -1,6 +1,6 @@
 {
   "name": "@veksa/eslint-plugin-reselect-utils",
-  "version": "5.1.0-p6",
+  "version": "5.1.0-p8",
   "description": "ESLint plugin to enforce best practices when using reselect and reselect-utils libraries",
   "homepage": "https://github.com/veksa/eslint-plugin-reselect-utils",
   "packageManager": "yarn@4.10.3",

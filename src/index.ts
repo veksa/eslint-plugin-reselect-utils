@@ -4,7 +4,7 @@ import type {TSESLint} from '@typescript-eslint/utils';
 
 const plugin = {
     meta: {
-        name: '@veksa/reselect-utils',
+        name: 'reselect-utils',
     },
     rules: {
         'no-different-props': noDifferentPropsRule,
@@ -14,9 +14,9 @@ const plugin = {
 
 const all: TSESLint.FlatConfig.ConfigArray = [
     {
-        name: '@veksa/reselect-utils',
+        name: 'reselect-utils',
         plugins: {
-            '@veksa': plugin,
+            'reselect-utils': plugin,
         },
         rules: {
             'reselect-utils/no-different-props': 'error',
